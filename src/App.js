@@ -1,26 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import PlayersList from './components/PlayersList/PlayersList';
+import {connect} from 'react-redux';
+import {addPlayer, setInputValue} from './redux/players/players.actions';
 
-function App() {
+function App({addPlayer, setInputValue, inputValue}) {
+
+  const handleInputChange = event => {
+    setInputValue(event.target.value)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <PlayersList />
+      <button onClick={addPlayer}>Dodaj igraca</button>
+      <input type="text" onChange={handleInputChange} value={inputValue}/>
+      <h1>{inputValue}</h1>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    inputValue: state.players.inputValue
+  }
+}
+
+
+export default connect(mapStateToProps, {
+  addPlayer,
+  setInputValue
+})(App);
